@@ -158,6 +158,23 @@ set_target_properties(test_capture
         RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/tests
 )
 
+#Presentation Pacer test
+add_executable(test_pacer
+    tests/test_pacer.cpp
+    src/pacer/PresentationPacer.cpp
+    src/pacer/TimerFd.cpp
+    src/benchmark/HighResTimer.cpp
+)
+
+target_include_directories(test_pacer 
+    PRIVATE
+        include
+)
+
+set_target_properties(test_pacer PROPERTIES
+    RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/tests"
+)
+
 # Reminding about the capability required by the GPU test
 add_custom_command(TARGET smoothdemon POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E echo

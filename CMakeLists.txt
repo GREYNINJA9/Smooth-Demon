@@ -78,6 +78,13 @@ target_compile_options(smoothdemon_capture
         ${SMOOTHDEMON_COMPILE_OPTIONS}
 )
 
+if(SDBUS_VERSION VERSION_LESS 2.0)
+    target_compile_definitions(smoothdemon_capture
+        PRIVATE
+            SMOOTHDEMON_SDBUS_LEGACY_API
+    )
+endif()
+
 target_link_libraries(smoothdemon_capture
     PUBLIC
         smoothdemon_core

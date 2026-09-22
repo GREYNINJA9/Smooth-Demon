@@ -20,6 +20,12 @@ namespace smoothdemon {
         constexpr const char* kRequestIface   = "org.freedesktop.portal.Request";
         constexpr const char* kSessionIface   = "org.freedesktop.portal.Session";
 
+    #ifdef SMOOTHDEMON_SDBUS_LEGACY_API
+        using PortalServiceName = std::string;
+    #else
+        using PortalServiceName = sdbus::ServiceName;
+    #endif
+
         // Portal request paths are: /org/freedesktop/portal/desktop/request/<SENDER>/<TOKEN>
         // SENDER is our unique bus name with ':' replaced by '_' and '.' replaced by '_'
         std::string unique_name_to_sender(const std::string& unique) {
@@ -50,7 +56,7 @@ namespace smoothdemon {
             try {
                 auto session_proxy = sdbus::createProxy(
                     *conn_,
-                    sdbus::ServiceName{kPortalService},
+                    PortalServiceName{kPortalService},
                     sdbus::ObjectPath{session_handle_});
                 session_proxy->callMethod("Close")
                             .onInterface(kSessionIface);
@@ -67,7 +73,7 @@ namespace smoothdemon {
 
         auto req_proxy = sdbus::createProxy(
             *conn_,
-            sdbus::ServiceName{kPortalService},
+            PortalServiceName{kPortalService},
             sdbus::ObjectPath{request_path});
 
         std::promise<std::pair<u32, std::map<std::string, sdbus::Variant>>> p;
@@ -110,7 +116,7 @@ namespace smoothdemon {
         create_opts["session_handle_token"]  = sdbus::Variant{session_token};
 
         auto portal_proxy = sdbus::createProxy(
-            *conn_, sdbus::ServiceName{kPortalService}, sdbus::ObjectPath{kPortalPath});
+            *conn_, PortalServiceName{kPortalService}, sdbus::ObjectPath{kPortalPath});
 
         try {
             portal_proxy->callMethod("CreateSession")

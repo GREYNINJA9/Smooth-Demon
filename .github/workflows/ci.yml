@@ -31,7 +31,8 @@ jobs:
             libspa-0.2-dev \
             libwayland-dev \
             libdrm-dev \
-            libsdbus-c++-dev
+            libsdbus-c++-dev \
+            ocl-icd-opencl-dev
 
       - name: Configure CMake
         run: |

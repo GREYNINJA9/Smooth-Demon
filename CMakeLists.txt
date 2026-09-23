@@ -175,6 +175,29 @@ set_target_properties(test_pacer PROPERTIES
     RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/tests"
 )
 
+#OpenCL Compute Test
+find_package(OpenCL REQUIRED)
+
+add_executable(test_opencl
+    tests/test_opencl.cpp
+    src/compute/OpenCLContext.cpp
+    src/compute/OpenCLProgram.cpp
+    src/compute/OpenCLBuffer.cpp
+)
+
+target_include_directories(test_opencl PRIVATE
+    include
+    ${OpenCL_INCLUDE_DIRS}
+)
+
+target_link_libraries(test_opencl PRIVATE
+    ${OpenCL_LIBRARIES}
+)
+
+set_target_properties(test_opencl PROPERTIES
+    RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/tests"
+)
+
 # Reminding about the capability required by the GPU test
 add_custom_command(TARGET smoothdemon POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E echo
